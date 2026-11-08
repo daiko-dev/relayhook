@@ -1,0 +1,52 @@
+# Teamwork & specification artifacts (DO NOT COMMIT)
+.agents/
+ORIGINAL_REQUEST.md
+PROJECT.md
+TEST_INFRA.md
+TEST_READY.md
+
+# Compiled binaries
+/bin/
+/relayhook
+/mock-receiver
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# SQLite databases & WAL files
+*.db
+*.db-shm
+*.db-wal
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Test binary & coverage artifacts
+*.test
+*.out
+coverage.txt
+coverage.html
+profile.cov
+
+# Environment & IDE files
+.env
+.env.*
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# VM home files & runtime directories
+.bash_logout
+.bashrc
+.profile
+.cache/
+.config/
+.local/
+.gemini
+.gitconfig
+go/
+

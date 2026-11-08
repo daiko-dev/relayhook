@@ -1,0 +1,52 @@
+services:
+  relayhook:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: relayhook
+    ports:
+      - "8080:8080"
+    command: ["-port", "8080", "-workers", "8", "-db", "/data/relayhook.db"]
+    volumes:
+      - relayhook-data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/healthz"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+
+  mock-receiver:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mock-receiver
+    entrypoint: ["/usr/local/bin/mock-receiver"]
+    command: ["-port", "9090", "-secret", "whsec_compose_demo"]
+    ports:
+      - "9090:9090"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:9090/healthz"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    container_name: prometheus
+    ports:
+      - "9091:9090"
+    volumes:
+      - ./deployments/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:11.2.0
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+volumes:
+  relayhook-data:
